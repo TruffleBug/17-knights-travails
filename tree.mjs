@@ -1,38 +1,47 @@
 class Node {
-    constructor(value) {
+    constructor(value, possibleMoves = null) {
         this.value = value,
-        this.children = 
+        this.possibleMoves = possibleMoves
     }
 }
 
 class Tree {
-    constructor(array) {
-        this.root = this.buildTree(array)
+    constructor(current) {
+        this.root = new Node(current, this.generateMoveList(current))
     }
 
     // makes tree & returns level-0 root node
-    buildTree(array) {
-        // console.log(array)
-        const tree = array.forEach(element => {
-            const node = new Node(element)
+    // buildTree(current) {
+    //     const children = [];
+    //     const moveList = this.generateMoveList(current);
+    //     const tree = moveList.forEach(element => {
+    //         children.push(new Node(element));
+    //     });
+    //     tree.possibleMoves = children;
+    //     return tree;
+    // }
+
+    // returns array of all possible moves from vertice
+    generateMoveList(vertice) {
+        const possibleMoves = [
+            [-2, -1],
+            [-2, 1],
+            [-1, -2],
+            [-1, 2],
+            [1, -2],
+            [1, 2],
+            [2, -1],
+            [2, 1],
+        ];
+        let adjacencyList = [];
+        possibleMoves.forEach((move) => { 
+            if (vertice[0] + move[0] < 0 || vertice[1] + move[1] < 0) {
+                return;
+            };
+            adjacencyList.push([vertice[0] + move[0], vertice[1] + move[1]]);
         });
-        
-        return tree;
+        return adjacencyList;
     }
-    
-        // // sorts into balanced binary tree & returns level-0 root node
-        // buildTree(array, startIndex = 0, endIndex = array.length - 1) {
-        //     // console.log(array)
-        //     if (startIndex > endIndex) return null;
-            
-        //     const midIndex = Math.floor((startIndex + endIndex) / 2);
-        //     const root = new Node(array[midIndex]);
-            
-        //     root.leftChild = this.buildTree(array, startIndex, midIndex - 1);
-        //     root.rightChild = this.buildTree(array, midIndex + 1, endIndex);
-            
-        //     return root;
-        // }
 
 //     // finds node with given value
 //     find(value, current = this.root) {
@@ -61,21 +70,21 @@ class Tree {
 //     //     };
 //     // }
 
-//     // calls callback on each node using breadth-first traversal method
-//     levelOrder(callback, current = this.root) {
-//         if(!callback) throw new Error('Callback function required.');
-//         if(!current) return;
+    // calls callback on each node using breadth-first traversal method
+    levelOrder(callback, current = this.root) {
+        if(!callback) throw new Error('Callback function required.');
+        if(!current) return;
         
-//         let queue = [current];
-//         while (queue.length > 0) {
-//             const node = queue.shift();
-//             callback(node)
-//             // node.value = callback(node.value);
+        let queue = [current];
+        while (queue.length > 0) {
+            const node = queue.shift();
+            callback(node)
+            // node.value = callback(node.value);
 
-//             if(node.leftChild) queue.push(node.leftChild);
-//             if(node.rightChild) queue.push(node.rightChild);
-//         };
-//     }
+            if(node.leftChild) queue.push(node.leftChild);
+            if(node.rightChild) queue.push(node.rightChild);
+        };
+    }
 
 //     // returns number of edges from given node to tree's root
 //     depth(value, node = this.root, depth = 0) {
