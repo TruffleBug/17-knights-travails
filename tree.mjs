@@ -87,13 +87,13 @@ class Tree {
     }
 
 //     // returns number of edges from given node to tree's root
-//     depth(value, node = this.root, depth = 0) {
-//         if(this.find(value) == 'Value does not exist.') return 'Value does not exist';
-//         if(value === node.value) return depth;
+    depth(value, node = this.root, depth = 0) {
+        if(this.find(value) == 'Value does not exist.') return 'Value does not exist';
+        if(value === node.value) return depth;
 
-//         if(value < node.value) return this.depth(value, node.leftChild, depth + 1);
-//         if(value > node.value) return this.depth(value, node.rightChild, depth + 1);
-//     }
+        if(value < node.value) return this.depth(value, node.leftChild, depth + 1);
+        if(value > node.value) return this.depth(value, node.rightChild, depth + 1);
+    }
 }
 
 

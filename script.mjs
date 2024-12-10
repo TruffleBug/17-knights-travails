@@ -1,62 +1,38 @@
 // import { Tree } from "./tree.mjs";
 
 function knightMoves(start, end) {
-    let path = [start];
+    // let startChildrenNode = [];
+    // generateMoveList(start).forEach(element => {
+    //     startChildrenNode.push(new createNode(element));
+    // });
+    // let tree = new createNode(start, startChildrenNode);
+    // console.log('ROOT OF TREE', tree);
+    
+    let tree = new createNode(start)
+    console.log('ROOT OF TREE', tree);
+    let path = [tree.value]
+    let count = levelOrder(callback, tree, end); 
 
-    let tree = new createNode(start, generateMoveList(start));
-    console.log('tree1', tree)
+            // if (checkIfContains(possibleMoves, end) === true) {
+            // path.push(` -> [${end}]`);
+            // const count = path.length - 1;
+            // return `You made it in ${count} moves! Here's your path: ${path}`;
 
-    function recursiveCheckForEnd(current) {
-        let moveList = generateMoveList(current.value);
-        if(checkIfContains(moveList, end) === true) {
-            console.log('You made it!');
-            return
-        } else {
-            let newPossibleMoves = current.possibleMoves.map((element) => {
-                return new createNode(element, generateMoveList(element));
-            });
-            current.possibleMoves = newPossibleMoves;
-            // current = current.possibleMoves
-        }
-
-        // current.possibleMoves.forEach((element) => {
-        //     return recursiveCheckForEnd(element)
-        // })
-    }
-    recursiveCheckForEnd(tree);
-    console.log('tree', tree);
-
-    // function buildTree(current) {
-    //     // if (path.length > 1) {
-    //     //     path.push(current);
-    //     //     console.log('path', path)
-    //     // }
-    //     const possibleMoves = generateMoveList(current);
-    //     console.log('current:', current, ',  possibleMoves:', possibleMoves);
-        
-    //     if (checkIfContains(possibleMoves, end) === true) {
-    //         path.push(` -> [${end}]`);
-    //         const count = path.length - 1;
-    //         return `You made it in ${count} moves! Here's your path: ${path}`;
+    return `You made it in ${count} moves! \nHere's your path: ${path}`
+    // function recursiveCheckForEnd(current) {
+    //     let moveList = generateMoveList(current.value);
+    //     if(checkIfContains(moveList, end) === true) {
+    //         console.log('You made it!');
+    //         return
     //     } else {
-    //         const node = createNode(current, possibleMoves);
-            
-    //         if (tree.length == 0) {
-    //             tree.push(node);
-    //         };
-
-    //         // console.log('node', node, 'possiblemove', node.possibleMoves[1]);
-    //         // replace node with value in tree array
-    //         node.possibleMoves.forEach((move) => {
-    //             move = buildTree(move);
-    //         })
-    //         console.log('tree', tree)
-    //         // return buildTree()
+    //         let newPossibleMoves = current.possibleMoves.map((element) => {
+    //             return new createNode(element, generateMoveList(element));
+    //         });
+    //         current.possibleMoves = newPossibleMoves;
     //     }
     // }
-    // return buildTree(start)
-    // return buildTree()
-    // console.log('tree root', tree.root)
+    // recursiveCheckForEnd(tree);
+    // console.log('tree', tree);
 };
 
 // returns array of all possible moves from vertice
@@ -102,7 +78,38 @@ function checkForEnd(value, end) {
     if(JSON.stringify(value) == JSON.stringify(end)) return 'YOU FOUND A PATH'
 };
 
+// calls callback on each node using breadth-first traversal method
+function levelOrder(callback, tree, end) {  
+    let queue = [tree];
+    let count = 1;
+
+    while (queue.length > 0) {
+        const value = queue.shift();
+        console.log('value', value.value);
+        count++
+        console.log('count', count)
+        // callback(value, end);
+        if(callback(value, end) === true) return count;
+
+        queue = queue.concat(value.possibleMoves);
+        // console.log('queue', queue)
+    };
+};
+
+function callback(value, end, count) {
+    if(!value.possibleMoves) {
+        if(JSON.stringify(value.value) == JSON.stringify(end)) {
+            return true;
+        } else { 
+            let startChildrenNode = [];
+            generateMoveList(value.value).forEach(element => {
+                startChildrenNode.push(new createNode(element));
+            });
+            value.possibleMoves = startChildrenNode;
+        };
+    };
+};
 
 
-knightMoves([0,0], [0,2])
+console.log(knightMoves([0,0], [0, 2]));
 // console.log(generateMoveList([2,1]))

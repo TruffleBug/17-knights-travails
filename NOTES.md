@@ -1,5 +1,4 @@
-[0, 0] -> [7,2]
-[]
+[0, 0] -> [2, 1] -> [0, 2]
 
 - breadth first traversal 
 
@@ -8,29 +7,24 @@
     - function should skip any vertice that has already been visited
 
 
-- buildtree(current)
-    - possibleMoves = [...]
-    - does possibleMoves contain end?
-        - if yes, return string
-        - if no, 
-            - create node from current & possible moves
-            - for each possible move, 
-                - possibleMoves = [...]
-                - does possibleMoves contain end?
-                - ...
-// CHANGE TO RECURSIVE CASE BEING JUST BUILDTREE(DO NOT ANALYZE IF POSSIBLE MOVES CONTAINS END)
+GENERAL GIST
+- let tree = new node w/ value of start & children = moveList
+
+- using levelOrder traversal method, call callback on each node
+    - if possibleMoves exists, push possibleMoves into queue
+
+- callback = 
+    - if value.possibleMoves does not exist,
+        - value = end?
+            - yes -> console.log('You made it!') & return
+            - no -> create new node w/ value & children = moveList for each possible move
+                - call levelOrder function recursively
+    
 
 
-- function knightMoves(start, end)
-    - let path = [start]
-    - let tree = new Tree(start)
-- buildtree(current)
-    - possibleMoves = [...]
-    - create node from current & possible moves
-- recursive function: for each possible move element,
-    <!-- - set possible move to current -->
-    - does possible move = end?
-        - if yes, return string
-        - if no, 
-            - element = new Tree(element)
-    - recursive function
+
+FIND PATH
+- function findPath(current = tree, end)
+    - let path = [];
+    - while current.possibleMoves exists,
+        - current = current.possibleMoves
