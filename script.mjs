@@ -1,28 +1,30 @@
-import { Tree } from "./tree.mjs";
+// import { Tree } from "./tree.mjs";
 
 function knightMoves(start, end) {
     let path = [start];
 
-    // let current = start;
     let tree = new createNode(start, generateMoveList(start));
-    
-    function recursiveCheckForEnd (current) {
-        // console.log('current', current.root.possibleMoves)
-        let newPossibleMoves = current.possibleMoves.map((element) => {
-            // console.log('element:', element, ', end:', end)
-            if(JSON.stringify(element) == JSON.stringify(end)) {
-                console.log('You made it!')
-                return
-            };
-            console.log('element before', element)
-            return new createNode(element, generateMoveList(element));
-            console.log('element after', element)
-        });
-        current.possibleMoves = newPossibleMoves;
+    console.log('tree1', tree)
+
+    function recursiveCheckForEnd(current) {
+        let moveList = generateMoveList(current.value);
+        if(checkIfContains(moveList, end) === true) {
+            console.log('You made it!');
+            return
+        } else {
+            let newPossibleMoves = current.possibleMoves.map((element) => {
+                return new createNode(element, generateMoveList(element));
+            });
+            current.possibleMoves = newPossibleMoves;
+            // current = current.possibleMoves
+        }
+
+        // current.possibleMoves.forEach((element) => {
+        //     return recursiveCheckForEnd(element)
+        // })
     }
-    
-    recursiveCheckForEnd(tree)
-    console.log('TEST', tree.possibleMoves[0])
+    recursiveCheckForEnd(tree);
+    console.log('tree', tree);
 
     // function buildTree(current) {
     //     // if (path.length > 1) {
@@ -79,6 +81,15 @@ function generateMoveList(vertice) {
     return adjacencyList;
 };
 
+// factory function - new node
+function createNode(value, possibleMoves = null) {
+    return {
+        value: value,
+        possibleMoves: possibleMoves
+    }
+};
+
+// checks if moves list array contains end
 function checkIfContains(possibleMoves, end) {
     const possibleMovesString = JSON.stringify(possibleMoves);
     const endString = JSON.stringify(end);
@@ -86,14 +97,12 @@ function checkIfContains(possibleMoves, end) {
     return false;
 };
 
-// factory function - new node
-function createNode(value, possibleMoves = null) {
-    return {
-        value: value,
-        possibleMoves: possibleMoves
-    }
-}
+// checks if specific value = end
+function checkForEnd(value, end) {
+    if(JSON.stringify(value) == JSON.stringify(end)) return 'YOU FOUND A PATH'
+};
 
 
-knightMoves([0,0], [0, 2])
+
+knightMoves([0,0], [0,2])
 // console.log(generateMoveList([2,1]))
