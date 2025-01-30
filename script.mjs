@@ -76,4 +76,4 @@ function levelOrder(tree, end) {
     };
 };
 
-console.log(knightMoves([6,5], [5,2]));
+console.log(knightMoves([0,0], [7,7]));
